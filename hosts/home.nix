@@ -23,8 +23,16 @@
   };
 
   # You should not change this value, even if you update Home Manager.
-  home.stateVersion = "24.05";
-
+  home.stateVersion = "24.11";
+  /*
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      monospace = ["Hack nerd Font"];
+      sansSerif = ["Hack nerd Font"];
+      serif = ["Hack nerd Font"];
+    };
+  };*/
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

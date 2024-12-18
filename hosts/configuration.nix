@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, inputs, pkgs, ... }:
+{ config, inputs, pkgs, lib, ... }:
 
 {
   imports =
@@ -19,7 +19,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "troll-nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -86,10 +86,24 @@
   users.users.sha3de = {
     isNormalUser = true;
     description = "sha3de";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [
     #  thunderbird
     ];
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
+  hardware = {
+    graphics.enable = true;
+  };
+
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+    xwayland.enable = true;
   };
 
   # Install firefox.
@@ -104,6 +118,8 @@
     };
   };
 
+  fonts.fontDir.enable = true;
+  fonts.fontconfig.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -113,28 +129,69 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-     git
+    btop
+    git
 
-     brave
+    brave
+    vesktop
 
-     #Editors
-     neovim
+    #Terminal
+    kitty
+    fish
+    tmux
+     
+    #Editors
+    neovim
+    vscode
+    pkgs.jetbrains-toolbox
+    pkgs.android-studio
+    
+    # Hyprland
+    sway
+    pkgs.waybar
+    pkgs.dunst
+    hyprpaper
+
+    # File Managers
+    rofi-wayland
+    nautilus
+
+
+    libGL
+    libvdpau
+    libxkbcommon
+    xorg.libxcb
+    xorg.xcbutil
+    xorg.libX11
+    vulkan-loader
+    mesa
+    qemu
+    usbutils
   ];
+  /*
+  fonts.packages = with pkgs; [
+    nerd-fonts.hack
+  ];*/
+  #Install Docker
+  virtualisation.docker.enable = true;
+
+  virtualisation.docker.daemon.settings = {
+    data-root = "~/dev/docker";
+  };
 
   environment.variables.EDITOR = "nano";
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
+  services.greetd = {
+    enable = true;
+    vt = 1;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+        user = "greeter";
+      };
+    };
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -149,4 +206,5 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 
+  
 }
