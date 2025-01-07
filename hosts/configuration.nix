@@ -120,15 +120,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  #Startup Script
-  systemd.user.services.startup = {
-    description = "...";
-    serviceConfig.PassEnvironment = "DISPLAY";
-    script = ''
-      rclone --vfs-cache-mode writes mount onedrive: ~/onedrive/
-    '';
-    wantedBy = ["multi-user.target"];
-  };
+  #Enable firefox
+  #programs.firefox.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -175,6 +168,7 @@
     dunst
     hyprlock
     hyprpaper
+    hyprcursor
     waybar
     xdg-desktop-portal-hyprland
     xdg-desktop-portal
@@ -200,10 +194,7 @@
     pkgs.nerdfonts
   ];
 
-  # fonts.packages = with pkgs; [
-  #   nerdfonts.hack
-  # ];
-  #Install Docker
+  #OneDrive Backup
   systemd.timers."onedrive-backup" = {
     wantedBy = ["timers.target"];
     timerConfig = {
@@ -213,17 +204,25 @@
     };
   };
   systemd.services."onedrive-backup" = {
-    script = ''
-      ${pkgs.rclone}/bin/rclone sync /home/sha3de/onedrive/ onedrive:nixos \
-        --log-file /home/sha3de/sync.txt \
-        -P \
-        --log-level info \
-        --exclude '.git' \
-        --exclude 'node_modules'
-    '';
+    # Ensure the service starts after the network is up
+    wantedBy = ["multi-user.target"];
+    after = ["network-online.target"];
+    requires = ["network-online.target"];
+
+    # Service configuration
     serviceConfig = {
-      Type = "oneshot";
+      Type = "simple";
+      ExecStartPre = [
+        "/run/current-system/sw/bin/mkdir -p home/sha3de/onedrive"
+        "${pkgs.rclone}/bin/rclone sync /home/sha3de/onedrive/ onedrive:nixos \ --log-file /home/sha3de/sync.txt \ -P \ --log-level info \ --exclude '.git' \ --exclude 'node_modules ' "
+      ];
+      ExecStart = "${pkgs.rclone}/bin/rclone mount onedrive: home/sha3de/onedrive/";
+      ExecStop = "/run/current-system/sw/bin/fusermount -u home/sha3de/onedrive/";
+      Restart = "on-failure";
+      RestartSec = "10s";
       User = "sha3de";
+      Group = "users";
+      Environment = ["PATH=/run/wrappers/bin/:$PATH"]; # Required environments
     };
   };
 

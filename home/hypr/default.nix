@@ -21,7 +21,7 @@
       # INPUT
       input = {
         follow_mouse = 1;
-        sensitivity = -0.7;
+        sensitivity = 0;
         kb_layout = "de";
         touchpad = {
           natural_scroll = true;
@@ -177,8 +177,8 @@
 
       windowrule = [
         "float,class:.waypaper-wrapped"
-        "move, 1, class:Brave-browser"
-        "move, 2, class:kitty"
+        "move, 2, class:Brave-browser"
+        "move, 1, class:kitty"
         "move, 4, class:vesktop"
       ];
     };
