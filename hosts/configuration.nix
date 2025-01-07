@@ -1,25 +1,24 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, inputs, pkgs, lib, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-    ];
+  config,
+  inputs,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   #Enable the flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
-
-  networking.hostName = "troll-nixos"; # Define your hostname.
+  networking.hostName = "trollos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -86,9 +85,9 @@
   users.users.sha3de = {
     isNormalUser = true;
     description = "sha3de";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -106,9 +105,6 @@
     xwayland.enable = true;
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-  
   #Home manager configuration
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
@@ -124,39 +120,71 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  #Startup Script
+  systemd.user.services.startup = {
+    description = "...";
+    serviceConfig.PassEnvironment = "DISPLAY";
+    script = ''
+      rclone --vfs-cache-mode writes mount onedrive: ~/onedrive/
+    '';
+    wantedBy = ["multi-user.target"];
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #Random shit
+    ripgrep
+    wl-clipboard-rs
+
+    pavucontrol
+    avizo
     btop
+    brightnessctl
+    alsa-utils
+    swaynotificationcenter
     git
+    pkgs.postman
+    grim
+    slurp
+    rclone
+    onlyoffice-bin
 
     brave
     vesktop
+
+    #Language
+    nodejs
 
     #Terminal
     kitty
     fish
     tmux
-     
+
     #Editors
     neovim
     vscode
-    pkgs.jetbrains-toolbox
-    pkgs.android-studio
-    
+    jetbrains-toolbox
+    android-studio
+    jetbrains.idea-ultimate
+    jetbrains.datagrip
+
     # Hyprland
     sway
-    pkgs.waybar
-    pkgs.dunst
+    waybar
+    dunst
+    hyprlock
     hyprpaper
+    waybar
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal
+    swaynotificationcenter
 
     # File Managers
     rofi-wayland
     nautilus
 
-
+    #Drivers
     libGL
     libvdpau
     libxkbcommon
@@ -167,12 +195,38 @@
     mesa
     qemu
     usbutils
+
+    #Fonts
+    pkgs.nerdfonts
   ];
-  /*
-  fonts.packages = with pkgs; [
-    nerd-fonts.hack
-  ];*/
+
+  # fonts.packages = with pkgs; [
+  #   nerdfonts.hack
+  # ];
   #Install Docker
+  systemd.timers."onedrive-backup" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnBootSec = "10m";
+      OnUnitActiveSec = "10m";
+      Unit = "onedrive-backup.service";
+    };
+  };
+  systemd.services."onedrive-backup" = {
+    script = ''
+      ${pkgs.rclone}/bin/rclone sync /home/sha3de/onedrive/ onedrive:nixos \
+        --log-file /home/sha3de/sync.txt \
+        -P \
+        --log-level info \
+        --exclude '.git' \
+        --exclude 'node_modules'
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "sha3de";
+    };
+  };
+
   virtualisation.docker.enable = true;
 
   virtualisation.docker.daemon.settings = {
@@ -180,7 +234,6 @@
   };
 
   environment.variables.EDITOR = "nano";
-
 
   services.greetd = {
     enable = true;
@@ -205,6 +258,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
-  
 }

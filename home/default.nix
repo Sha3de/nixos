@@ -1,6 +1,9 @@
 {...}: {
   imports = [
-    ./git.nix
     ./hypr
+    ./dev
+    ./waybar
+    ./git.nix
+    ./gtk.nix
   ];
 }

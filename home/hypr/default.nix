@@ -3,9 +3,9 @@
     # ./hyprland-environment.nix
     ./hyprpaper.nix
     #./hypridle.nix
-    #./hyprlock.nix
+    ./hyprlock.nix
   ];
-  
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
@@ -14,14 +14,14 @@
 
       # ENVIRONMENT VARIABLES
       env = [
-        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_THEME,Bibata-Modern-Ice"
         "HYPRCURSOR_SIZE,24"
       ];
 
       # INPUT
       input = {
         follow_mouse = 1;
-        sensitivity = 0;
+        sensitivity = -0.7;
         kb_layout = "de";
         touchpad = {
           natural_scroll = true;
@@ -92,8 +92,8 @@
         "hyprpaper &"
         "hypridle &"
         "brave &"
-        "kitty &"
-        "btop"
+        "kitty fish &"
+        "vesktop"
       ];
 
       # Keybindings
@@ -105,7 +105,7 @@
         "$mainMod SHIFT, N, exec, swaync-client -rs"
         "$mainMod SHIFT, C, exec, exit"
         "$mainMod, Q, exec, kitty fish"
-        "$mainMod, K, killactive"
+        "$mainMod, C, killactive"
 
         # Window Management
         "$mainMod, P, pseudo"
@@ -114,10 +114,6 @@
         "$mainMod SHIFT, M, fullscreen, 0"
 
         # Move Focus
-        "$mainMod, H, movefocus, l"
-        "$mainMod, L, movefocus, r"
-        "$mainMod, K, movefocus, u"
-        "$mainMod, J, movefocus, d"
         "$mainMod, Left, movefocus, l"
         "$mainMod, Right, movefocus, r"
         "$mainMod, Up, movefocus, u"
@@ -163,6 +159,9 @@
         # Other
         "$mainMod, ENTER, togglespecialworkspace"
         "$mainMod SHIFT, ENTER, movetoworkspace,special"
+
+        "$mainMod SHIFT, Print, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +%s).png"
+        "$mainMod, L, exec, hyprlock"
       ];
 
       bindm = [
@@ -180,6 +179,7 @@
         "float,class:.waypaper-wrapped"
         "move, 1, class:Brave-browser"
         "move, 2, class:kitty"
+        "move, 4, class:vesktop"
       ];
     };
 
