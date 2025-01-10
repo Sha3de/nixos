@@ -16,6 +16,8 @@
       env = [
         "HYPRCURSOR_THEME,Bibata-Modern-Ice"
         "HYPRCURSOR_SIZE,24"
+        "XCURSOR_THEME,Bibata-Modern-Ice"
+        "XCURSOR_SIZE,24"
       ];
 
       # INPUT
@@ -171,14 +173,15 @@
 
       windowrulev2 = [
         "suppressevent maximize, class:.*"
-        "workspace 1, class:Brave-browser"
-        "workspace 2, class:kitty"
+        "workspace 1, class:kitty"
+        "workspace 2, class:Brave-browser"
+        "workspace 4, class:vesktop"
       ];
 
       windowrule = [
         "float,class:.waypaper-wrapped"
-        "move, 2, class:Brave-browser"
         "move, 1, class:kitty"
+        "move, 2, class:Brave-browser"
         "move, 4, class:vesktop"
       ];
     };

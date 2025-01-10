@@ -95,9 +95,12 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  hardware = {
-    graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
+
+  boot.initrd.kernelModules = ["amdgpu"];
 
   programs.hyprland = {
     enable = true;
@@ -119,6 +122,14 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  #Enable opengl
+  hardware.opengl.enable = true;
+
+  #Enable Java
+  programs.java = {
+    enable = true;
+  };
 
   #Enable firefox
   #programs.firefox.enable = true;
@@ -142,6 +153,8 @@
     slurp
     rclone
     onlyoffice-bin
+    teams-for-linux
+    clinfo
 
     brave
     vesktop
@@ -189,10 +202,34 @@
     mesa
     qemu
     usbutils
+    radeontop
+    stress-ng
+
+    #Games
+    minecraft
 
     #Fonts
     pkgs.nerdfonts
   ];
+  #HIP
+  systemd.tmpfiles.rules = let
+    rocmEnv = pkgs.symlinkJoin {
+      name = "rocm-combined";
+      paths = with pkgs.rocmPackages; [
+        rocblas
+        hipblas
+        clr
+      ];
+    };
+  in [
+    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+  ];
+
+  #OPENCL
+  hardware.graphics.extraPackages = with pkgs; [rocmPackages.clr.icd];
+  environment.variables = {
+    ROC_ENABLE_PRE_VEGA = "1";
+  };
 
   #OneDrive Backup
   systemd.timers."onedrive-backup" = {
