@@ -11,8 +11,6 @@
 
 }
 
-Jonas Schuster
-
 /* Reset all styles */
 * {
     border: none;
@@ -60,7 +58,7 @@ window#waybar.hidden {
 }
 
 #workspaces button.urgent {
-    color: #F7768E;
+    color: #ffff60;
 }
 
 #window {
@@ -110,7 +108,7 @@ window#waybar.hidden {
 #workspaces {
     border-radius: 20px;
     padding: 0px 10px;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-wallpaper {
@@ -140,7 +138,7 @@ tooltip,
 
 #custom-weather {
     color: #C0CAF5;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-weather.severe {
@@ -153,7 +151,7 @@ tooltip,
 
 #custom-weather.clearNight {
     color: #cad3f5;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-weather.cloudyFoggyDay,
@@ -165,18 +163,18 @@ tooltip,
 #custom-weather.rainyDay,
 #custom-weather.rainyNight {
     color: #5aaca5;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-weather.showyIcyDay,
 #custom-weather.snowyIcyNight {
     color: #d6e7e5;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-weather.default {
     color: #FBF1C7;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
@@ -191,7 +189,7 @@ tooltip,
 
 #network {
     color: #81a1c1;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #network.disabled,
@@ -201,12 +199,12 @@ tooltip,
 
 #cpu {
     color: #b48ead;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #temperature {
     color: #8fbcbb;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #temperature.critical {
@@ -215,27 +213,27 @@ tooltip,
 
 #memory {
     color: #a3be8c;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #idle_inhibitor {
     color: #81a1c1;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #backlight {
     color: #ebcb8b;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #pulseaudio {
     color: #b48ead;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #battery {
     color: #81a1c1;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 @keyframes blink {
@@ -257,18 +255,18 @@ tooltip,
 
 #clock {
     color: #C0CAF5;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-media {
-    background-color: #414868;
+    background-color: #212125;
     color: #C0CAF5;
     min-width: 100px;
 }
 
 #custom-media.custom-spotify {
     color: #8ccf7e;
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #custom-media.custom-vlc {
@@ -276,7 +274,7 @@ tooltip,
 }
 
 #tray {
-    background-color: #414868;
+    background-color: #212125;
 }
 
 #tray>.passive {
@@ -289,7 +287,7 @@ tooltip,
 }
 
 #custom-color {
-    background-color: #414868;
+    background-color: #212125;
     color: #D79921;
     padding-left: 10px;
     padding-right: 15px;
@@ -297,7 +295,7 @@ tooltip,
 }
 
 #idle_inhibitor {
-    background-color: #414868;
+    background-color: #212125;
     color: #FBF1C7;
 }
 

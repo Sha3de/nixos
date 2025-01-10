@@ -8,7 +8,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    systemdIntegration = true;
+    systemd.enable = true;
     settings = {
       monitor = ["eDP-2,1920x1200@165.01500,0x0,1"];
 

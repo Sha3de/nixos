@@ -123,9 +123,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  #Enable opengl
-  hardware.opengl.enable = true;
-
   #Enable Java
   programs.java = {
     enable = true;
