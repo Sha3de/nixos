@@ -123,11 +123,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  #Enable Java
-  programs.java = {
-    enable = true;
-  };
-
   #Enable firefox
   #programs.firefox.enable = true;
 
@@ -152,6 +147,8 @@
     onlyoffice-bin
     teams-for-linux
     clinfo
+    gradle_8_11
+    zulu17 #Java 17
 
     brave
     vesktop
@@ -171,6 +168,7 @@
     android-studio
     jetbrains.idea-ultimate
     jetbrains.datagrip
+    jetbrains.webstorm
 
     # Hyprland
     sway

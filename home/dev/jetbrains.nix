@@ -41,5 +41,11 @@ in {
       "github-copilot"
       github-theme
     ])
+
+    (jetbrains.plugins.addPlugins jetbrains.webstorm [
+      #   catppuccin
+      "github-copilot"
+      github-theme
+    ])
   ];
 }

@@ -11,6 +11,7 @@
       github.copilot
       kamadorueda.alejandra
       dotjoshjohnson.xml
+      leonardssh.vscord
     ];
     mutableExtensionsDir = false;
     package = pkgs.vscode;
